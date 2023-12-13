@@ -3,17 +3,41 @@
 #include <iostream>
 using namespace std;
 
-int knapsack(int cap, int w[], int val[], int n){
-	if (n == 0 || cap == 0){
-		return 0;
+void knapsack(int cap, int w[], int val[], int n){
+	int F[n+1][cap+1];
+	
+	for (int i = 0; i <= n; i++){
+		for (int j = 0; j <= cap; j++){
+			F[i][j] = 0;
+		}
+	}
+	for (int i = 1; i <= n; i++){
+		for (int j = 0; j <= cap; j++){
+			if (w[i-1] <= j){
+				F[i][j] = max(val[i-1] + F[i-1][j-w[i-1]], F[i-1][j]);
+			}
+			else{
+				F[i][j] = F[i-1][j];
+			}
+		}
 	}
 	
-	if (w[n-1] > cap){
-		return knapsack(cap, w, val, n-1);
+	cout << "\nThe Matrix is:\n";
+	for (int i = 0; i <= n; i++){
+		for (int j = 0; j <= cap; j++){
+			cout << F[i][j] << "\t";
+		}
+		cout << endl;
 	}
 	
-	else{
-		return max(val[n-1] + knapsack(cap - w[n-1], w, val, n-1), knapsack(cap, w, val, n-1));
+	int i = n, j = cap;
+	cout << "Selected items:\n";
+	while (i>0 && j>0){
+		if (F[i][j] != F[i-1][j]){
+			cout << "Item: " << i << " (Weight: " << w[i-1] << " & Value: " << val[i-1] << ")\n";
+			j -= w[i-1];
+		}
+		i--;
 	}
 }
 
@@ -36,7 +60,5 @@ int main(){
 		cin >> val[i];
 	}
 	
-	int k = knapsack(cap, w, val, n);
-	
-	cout << "The maximum value is: " << k << endl;
+	knapsack(cap, w, val, n);
 }
