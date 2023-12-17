@@ -52,18 +52,5 @@ int main() {
     int maxSumValue = maxSum(n);
 
     cout << "Maximum sum of non-adjacent coins: " << maxSumValue << endl;
-
-    cout << "Selected coins: ";
-    int i = n - 1;
-    while (i >= 0) {
-        if (selectedCoins[i] == 1) {
-            cout << coins[i] << " ";
-            i--;
-        } else {
-            i -= 2;
-        }
-    }
-    
     return 0;
 }
-
